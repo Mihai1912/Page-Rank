@@ -22,7 +22,6 @@ Cerinta 2 :
 
 Cerinta 3 :
 	- Am citit fisierul de input , si am creat matricea de adiacenta similar ca la cerinta 1 
-	- Se craeza un vector al paginilor cu probabilitatile de a intra pe pagina respectiva
-	- Se creaza matricea in care se pune pagina si porbabilitatea de intrare pe aceasta
-	- Se sorteaza matricea descrescator in fuctie de a doua coloana (se creaza clasamentul paginilor )
+	- Se creaza matricea in care se pune pagina si porbabilitatea de intrare pe aceasta , si se sorteaza
+	  descrescator
 	- Se scrie in fisierul de output datele obtinute

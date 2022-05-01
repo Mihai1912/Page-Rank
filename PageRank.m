@@ -4,6 +4,9 @@ function [R1 R2] = PageRank(nume, d, eps)
     R1 = Iterative(nume , d , eps);
     R2 = Algebraic(nume , d , eps);
 
+    %R2 = flip(sort(R2));
+   
+    
     ptr = fopen(nume);
     n = fscanf(ptr , "%d" , [1 , 1]);
     A = zeros(n);
@@ -30,25 +33,28 @@ function [R1 R2] = PageRank(nume, d, eps)
     val1 = fscanf(ptr , "%f" , [1 , 1]);
     val2 = fscanf(ptr , "%f" , [1 , 1]);
     
-    M = zeros(n , 1);
+    % se creaza o matrice cu valorile obtinute prin metroda algebraica si
+    % indexurile paginilor , iar apoi se sorteaza descrescator
+    Ap = zeros(n ,2);
+    for w = 1 : n
+      Ap(w , 1) = w;
+      Ap(w , 2) = R2(w , 1);
+    endfor
     
-    % se craeza un vector al paginilor cu probabilitatile de a intra pe pagina
+    for i = 1 : n-1
+      for j = i+1 : n
+        if (Ap(i , 2) < Ap(j , 2))
+          [Ap(i , 2) , Ap(j , 2)] = swap(Ap(i , 2) , Ap(j , 2));
+          [Ap(i , 1) , Ap(j , 1)] = swap(Ap(i , 1) , Ap(j , 1));
+        endif
+      endfor
+    endfor
+    
+    % se creaza un vector al paginilor cu probabilitatile de a intra pe pagina
     % respectiva 
     for m = 1 : n
-        y = Apartenenta(R2(m) , val1 , val2);
-        M(m , 1) = y;
+        Ap(m , 2) = Apartenenta(Ap(m , 2) , val1 , val2);
     endfor
- 
-    % se creaza matricea in care se pune pagina si porbabilitatea de intrare pe
-    % aceasta
-    matr_cr2 = zeros(n,2);
-    for u = 1 : n
-        matr_cr2(u,1) = u;
-        matr_cr2(u,2) = M(u,1);
-    endfor
-    % se sorteaza matricea descrescator in fuctie de a doua coloana (se creaza
-    % clasamentul paginilor )
-    matr_cr2 = sortrows(matr_cr2 , [-2 , 2]);
  
     % se scrie in fisierul de output datele obtinute
     if (strcmp(nume , "graf1") == 1) 
@@ -72,8 +78,8 @@ function [R1 R2] = PageRank(nume, d, eps)
 
     for i = 1 : n
         fprintf(output , "%d " , i);
-        fprintf(output , "%d " , matr_cr2(i , 1));
-        fprintf(output , "%5.6f\n" , matr_cr2(i , 2));
+        fprintf(output , "%d " , Ap(i , 1));
+        fprintf(output , "%5.6f\n" , Ap(i , 2));
     endfor
  
     fclose(ptr);

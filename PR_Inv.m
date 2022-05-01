@@ -5,7 +5,7 @@ function B = PR_Inv(A)
   % coloana cu transpusa lui Q si apoi se rezolva sistemul superior triunghiular
   % si se concateneaza vectorul abtinut din rezolvarea sistemului la matricea
   % rezultat 
-    n = size(A);
+    n = size(A)(1,2);
     AUX = zeros(n);
     [Q R] = GSMod(A);
     I = eye(n);
